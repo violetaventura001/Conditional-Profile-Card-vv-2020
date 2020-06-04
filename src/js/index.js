@@ -29,18 +29,57 @@ function render(variables = {}) {
   let cover = `<div class="cover"><img src="${variables.background}" /></div>`;
   if (variables.includeCover == false) cover = "<div class='cover'></div>";
 
+  function isValid() {
+    if (variables.name == null) return false;
+    if (variables.lastname == null) return false;
+    if (variables.role == null) return false;
+    if (variables.state == null) return false;
+    if (variables.country == null) return false;
+    return true;
+  }
+
   // reset the website body with the new html output
-  document.querySelector("#widget_content").innerHTML = `<div class="widget">
+  document.querySelector("#widget_content").innerHTML = `
+  
+  ${
+    isValid() == false
+      ? '<div class="alert"> * Required Fields Missing</div>'
+      : ""
+  }
+  
+  <div class="widget">
             ${cover}
           <img src="${variables.avatarURL}" class="photo" />
-          <h1>${variables.name} ${variables.lastname}</h1>
-          <h2>${variables.role}</h2>
-          <h3>${variables.city},${variables.country}</h3>
-          <ul class="position-right">
-            <li><a href="https://twitter.com/${variables.twitter}"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="https://github.com/${variables.github}"><i class="fa fa-github"></i></a></li>
-            <li><a href="https://linkedin.com/${variables.linkedin}"><i class="fa fa-linkedin"></i></a></li>
-            <li><a href="https://instagram.com/${variables.instagram}"><i class="fa fa-instagram"></i></a></li>
+          <h1>${variables.name == null ? "First Name" : variables.name} ${
+    variables.lastname == null ? "Last Name" : variables.name
+  }</h1>
+          <h2>${variables.role == null ? "Role" : variables.role}</h2>
+          <h3>${variables.state == null ? "State" : variables.state},${
+    variables.country == null ? "Country" : variables.country
+  }</h3>
+          <ul class=${variables.socialMediaPosition}>
+            ${
+              variables.twitter == null
+                ? ""
+                : `
+            <li><a href="https://twitter.com/${variables.twitter}"><i class="fa fa-twitter"></i></a></li>`
+            }
+            ${
+              variables.github == null
+                ? ""
+                : `
+            <li><a href="https://github.com/${variables.github}"><i class="fa fa-github"></i></a></li>`
+            }
+            
+            <li><a href="https://linkedin.com/${
+              variables.linkedin
+            }"><i class="fa fa-linkedin"></i></a></li>
+            ${
+              variables.twitter == null
+                ? ""
+                : `
+            <li><a href="https://instagram.com/${variables.instagram}"><i class="fa fa-instagram"></i></a></li>`
+            }
           </ul>
         </div>
     `;
@@ -54,21 +93,23 @@ window.onload = function() {
     // if includeCover is true the algorithm should
     includeCover: true,
     // this is the url of the image that will used as background for the profile cover
-    background: "https://images.unsplash.com/photo-1511974035430-5de47d3b95da",
+    background:
+      "https://learntechteach.com/wp-content/uploads/2015/10/tech.jpg",
     // this is the url for the profile avatar
-    avatarURL: "https://randomuser.me/api/portraits/women/42.jpg",
+    avatarURL:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTk2x0tO8hfXeDAPAqioa3iWgEnf5u3S6TmK37_tMLlsXhgPiV9&usqp=CAU",
     // social media bar position (left or right)
-    socialMediaPosition: "left",
+    socialMediaPosition: "position-left",
     // social media usernames
     twitter: null,
-    github: "alesanchezr",
+    github: null,
     linkedin: null,
     instagram: null,
     name: null,
     lastname: null,
     role: null,
     country: null,
-    city: null
+    state: null
   };
   render(window.variables); //render the card for the first time
 
